@@ -8,5 +8,10 @@ import (
 func main() {
 	l := log.New(os.Stdout, "TCP client: ", 0)
 
-	l.Println("Hello world!")
+	if len(os.Args) == 1 {
+		l.Fatalln("port is not provided")
+	}
+
+	port := os.Args[1]
+	l.Println("port:", port)
 }
