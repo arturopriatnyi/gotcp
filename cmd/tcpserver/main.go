@@ -2,9 +2,12 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"log"
 	"net"
 	"os"
+	"os/signal"
+	"sync"
 )
 
 var l = log.New(os.Stdout, "TCP server: ", 0)
@@ -31,16 +34,33 @@ func main() {
 		l.Println("server closed")
 	}(s)
 
-	for {
-		// accepting a client
-		c, err := s.Accept()
-		if err != nil {
-			l.Printf("client acceptance failed: %v\n", err)
-		}
+	// graceful shutdown setup
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt)
+	var wg sync.WaitGroup
 
-		// handling the client concurrently
-		go handle(c)
-	}
+	go func() {
+		for {
+			// accepting a client
+			c, err := s.Accept()
+			if errors.Is(err, net.ErrClosed) {
+				break
+			}
+			if err != nil {
+				l.Printf("client acceptance failed: %v\n", err)
+			}
+
+			// handling the client concurrently
+			go func() {
+				wg.Add(1) // adding new client to the counter
+				handle(c)
+				wg.Done() // releasing a client
+			}()
+		}
+	}()
+
+	<-quit    // waiting for interrupt
+	wg.Wait() // waiting until all accepted clients are handled
 }
 
 func handle(c net.Conn) {
