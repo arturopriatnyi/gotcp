@@ -31,27 +31,29 @@ func main() {
 		l.Println("server closed")
 	}(s)
 
-	// accepting a client
-	c, err := s.Accept()
-	if err != nil {
-		l.Fatalf("client acceptance failed: %v\n", err)
-	}
+	for {
+		// accepting a client
+		c, err := s.Accept()
+		if err != nil {
+			l.Fatalf("client acceptance failed: %v\n", err)
+		}
 
-	// request
-	req, err := bufio.NewReader(c).ReadString('\n')
-	if err != nil {
-		l.Printf("request reading failed: %v\n", err)
-	}
-	l.Printf("request: %s", req)
+		// request
+		req, err := bufio.NewReader(c).ReadString('\n')
+		if err != nil {
+			l.Printf("request reading failed: %v\n", err)
+		}
+		l.Printf("request: %s", req)
 
-	// response
-	if _, err = c.Write([]byte(req)); err != nil {
-		l.Printf("response sending failed: %v\n", err)
-	}
-	l.Printf("response: %s", req)
+		// response
+		if _, err = c.Write([]byte(req)); err != nil {
+			l.Printf("response sending failed: %v\n", err)
+		}
+		l.Printf("response: %s", req)
 
-	// closing client connection
-	if err = c.Close(); err != nil {
-		l.Printf("client connection closing failed: %v\n", err)
+		// closing client connection
+		if err = c.Close(); err != nil {
+			l.Printf("client connection closing failed: %v\n", err)
+		}
 	}
 }
