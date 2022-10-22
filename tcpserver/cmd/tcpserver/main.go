@@ -7,17 +7,13 @@ import (
 	"os"
 )
 
+const address = ":8080"
+
 func main() {
 	l := log.New(os.Stdout, "TCP server: ", 0)
 
-	// getting server's port
-	if len(os.Args) == 1 {
-		l.Fatalln("missing port")
-	}
-	port := ":" + os.Args[1]
-
 	// starting the server
-	s, err := net.Listen("tcp", port)
+	s, err := net.Listen("tcp", address)
 	if err != nil {
 		l.Fatalf("server starting failed: %v\n", err)
 	}

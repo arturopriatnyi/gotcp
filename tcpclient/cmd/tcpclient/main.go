@@ -12,16 +12,16 @@ func main() {
 	l := log.New(os.Stdout, "TCP client: ", 0)
 
 	// getting server's IP address
-	if len(os.Args) == 1 {
+	address := os.Getenv("ADDRESS")
+	if address == "" {
 		l.Fatalln("missing server IP address")
 	}
-	addr := os.Args[1]
 
 	for {
 		// connecting to a server
-		c, err := net.Dial("tcp", addr)
+		c, err := net.Dial("tcp", address)
 		if err != nil {
-			l.Fatalf("server connection failed: %s\n", addr)
+			l.Fatalf("server connection failed: %s\n", address)
 		}
 		l.Println("client connected")
 
