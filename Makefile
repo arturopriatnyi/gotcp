@@ -1,7 +1,10 @@
-all: build run
+all: lint build run
 
 build:
 	docker-compose build
 
 run:
 	docker-compose up --remove-orphans
+
+lint:
+	docker build . -t linter

@@ -28,7 +28,7 @@ func main() {
 		// request
 		req := []byte("ping\n")
 		if _, err = c.Write(req); err != nil {
-			l.Printf("request sending failed: %v\n")
+			l.Printf("request sending failed: %v\n", err)
 		}
 		l.Printf("request: %s", req)
 
