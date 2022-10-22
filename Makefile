@@ -7,4 +7,4 @@ run:
 	docker-compose up --remove-orphans
 
 lint:
-	docker build . -t linter
+	docker build . -f ./Dockerfile.lint -t linter
