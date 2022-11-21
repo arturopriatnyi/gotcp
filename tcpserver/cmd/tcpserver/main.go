@@ -10,17 +10,13 @@ import (
 	"sync"
 )
 
+const address = ":8080"
+
 var l = log.New(os.Stdout, "TCP server: ", 0)
 
 func main() {
-	// getting server's port
-	if len(os.Args) == 1 {
-		l.Fatalln("missing port")
-	}
-	port := ":" + os.Args[1]
-
 	// starting the server
-	s, err := net.Listen("tcp", port)
+	s, err := net.Listen("tcp", address)
 	if err != nil {
 		l.Fatalf("server starting failed: %v\n", err)
 	}

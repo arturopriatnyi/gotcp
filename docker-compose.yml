@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  tcp-server:
+    container_name: tcp-server
+    build: ./tcpserver
+    ports:
+      - "${TCP_SERVER_PORT}:8080"
+    restart: on-failure
+
+  first-tcp-client:
+    container_name: first-tcp-client
+    build: ./tcpclient
+    environment:
+      - ADDRESS=${TCP_SERVER_ADDRESS}
+    restart: on-failure
+
+  second-tcp-client:
+    container_name: second-tcp-client
+    build: ./tcpclient
+    environment:
+      - ADDRESS=${TCP_SERVER_ADDRESS}
+    restart: on-failure

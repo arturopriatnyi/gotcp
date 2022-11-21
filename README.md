@@ -4,12 +4,12 @@ Just an exercise of using TCP protocol with Go standard library.
 
 ## To test
 
-Start a server with:
+Start the app with:
 ```sh
-go run cmd/tcpserver/main.go 8080
+make all
 ```
 
-Start clients with:
+Run linter with:
 ```sh
-go run cmd/tcpclient/main.go localhost:8080
+make lint 
 ```
